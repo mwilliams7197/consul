@@ -1,6 +1,5 @@
 import Adapter from './http';
 import { inject as service } from '@ember/service';
-import { get } from '@ember/object';
 
 export const DATACENTER_QUERY_PARAM = 'dc';
 export default Adapter.extend({
