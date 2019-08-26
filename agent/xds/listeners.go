@@ -4,7 +4,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	als "github.com/envoyproxy/go-control-plane/envoy/config/accesslog/v2"
+	alf "github.com/envoyproxy/go-control-plane/envoy/config/filter/accesslog/v2"
 	"strings"
+	"time"
 
 	envoy "github.com/envoyproxy/go-control-plane/envoy/api/v2"
 	envoyauth "github.com/envoyproxy/go-control-plane/envoy/api/v2/auth"
@@ -253,7 +256,7 @@ func (s *Server) makePublicListener(cfgSnap *proxycfg.ConfigSnapshot, token stri
 
 		l = makeListener(PublicListenerName, addr, port)
 
-		filter, err := makeListenerFilter(false, cfg.Protocol, "public_listener", LocalAppClusterName, "", true)
+		filter, err := makeListenerFilter(false, cfg.Protocol, "public_listener", LocalAppClusterName, "", true, 0, "")
 		if err != nil {
 			return nil, err
 		}
@@ -303,7 +306,7 @@ func (s *Server) makeUpstreamListenerIgnoreDiscoveryChain(
 	clusterName := CustomizeClusterName(sni, chain)
 
 	l := makeListener(upstreamID, addr, u.LocalBindPort)
-	filter, err := makeListenerFilter(false, cfg.Protocol, upstreamID, clusterName, "upstream_", false)
+	filter, err := makeListenerFilter(false, cfg.Protocol, upstreamID, clusterName, u.DestinationName, false, cfg.TimeoutMs, u.DestinationName)
 	if err != nil {
 		return nil, err
 	}
@@ -408,7 +411,7 @@ func (s *Server) makeUpstreamListenerForDiscoveryChain(
 		proto = "tcp"
 	}
 
-	filter, err := makeListenerFilter(true, proto, upstreamID, "", "upstream_", false)
+	filter, err := makeListenerFilter(true, proto, upstreamID, "", "upstream_", false, cfg.TimeoutMs, u.DestinationName)
 	if err != nil {
 		return nil, err
 	}
@@ -423,14 +426,14 @@ func (s *Server) makeUpstreamListenerForDiscoveryChain(
 	return l, nil
 }
 
-func makeListenerFilter(useRDS bool, protocol, filterName, cluster, statPrefix string, ingress bool) (envoylistener.Filter, error) {
+func makeListenerFilter(useRDS bool, protocol, filterName, cluster, statPrefix string, ingress bool, timeout int, serviceName string) (envoylistener.Filter, error) {
 	switch protocol {
 	case "grpc":
-		return makeHTTPFilter(useRDS, filterName, cluster, statPrefix, ingress, true, true)
+		return makeHTTPFilter(useRDS, filterName, cluster, statPrefix, ingress, true, true, timeout, serviceName)
 	case "http2":
-		return makeHTTPFilter(useRDS, filterName, cluster, statPrefix, ingress, false, true)
+		return makeHTTPFilter(useRDS, filterName, cluster, statPrefix, ingress, false, true, timeout, serviceName)
 	case "http":
-		return makeHTTPFilter(useRDS, filterName, cluster, statPrefix, ingress, false, false)
+		return makeHTTPFilter(useRDS, filterName, cluster, statPrefix, ingress, false, false, timeout, serviceName)
 	case "tcp":
 		fallthrough
 	default:
@@ -469,11 +472,11 @@ func makeStatPrefix(protocol, prefix, filterName string) string {
 	return fmt.Sprintf("%s%s_%s", prefix, strings.Replace(filterName, ":", "_", -1), protocol)
 }
 
-func makeHTTPFilter(
-	useRDS bool,
-	filterName, cluster, statPrefix string,
-	ingress, grpc, http2 bool,
-) (envoylistener.Filter, error) {
+func makeHTTPFilter(useRDS bool, filterName, cluster, statPrefix string, ingress, grpc, http2 bool, timeout int, serviceName string) (envoylistener.Filter, error) {
+	//timeoutString, _ := fmt.Print(time.Duration(timeout) * time.Millisecond)
+	requestTimeout := time.Duration(timeout) * time.Millisecond
+	// 2/3 rd time will be given to per try.
+	perTryTimeout := time.Duration(timeout*(2/3)) * time.Second
 	op := envoyhttp.INGRESS
 	if !ingress {
 		op = envoyhttp.EGRESS
@@ -482,14 +485,28 @@ func makeHTTPFilter(
 	if grpc {
 		proto = "grpc"
 	}
-	cfg := &envoyhttp.HttpConnectionManager{
-		StatPrefix: makeStatPrefix(proto, statPrefix, filterName),
-		CodecType:  envoyhttp.AUTO,
-		HttpFilters: []*envoyhttp.HttpFilter{
-			&envoyhttp.HttpFilter{
-				Name: "envoy.router",
-			},
+	httpFilters := []*envoyhttp.HttpFilter{
+		&envoyhttp.HttpFilter{
+			Name: "envoy.router",
 		},
+	}
+	if http2 {
+		httpFilters = append(httpFilters, &envoyhttp.HttpFilter{Name: "envoy.grpc_web"})
+	}
+
+	alsConfig := &als.FileAccessLog{
+		Path: fmt.Sprintf("/var/log/envoy-access/%s.log", serviceName),
+	}
+	alsConfigPbst, err := types.MarshalAny(alsConfig)
+	//TODO Remove Panic
+	if err != nil {
+		panic(err)
+	}
+	cfg := &envoyhttp.HttpConnectionManager{
+		//StatPrefix:  makeStatPrefix(proto, statPrefix, filterName),
+		StatPrefix:  makeStatPrefix(proto, statPrefix, filterName),
+		CodecType:   envoyhttp.AUTO,
+		HttpFilters: httpFilters,
 		Tracing: &envoyhttp.HttpConnectionManager_Tracing{
 			OperationName: op,
 			// Don't trace any requests by default unless the client application
@@ -497,6 +514,12 @@ func makeHTTPFilter(
 			// sampled.
 			RandomSampling: &envoytype.Percent{Value: 0.0},
 		},
+		AccessLog: []*alf.AccessLog{{
+			Name: util.FileAccessLog,
+			ConfigType: &alf.AccessLog_TypedConfig{
+				TypedConfig: alsConfigPbst,
+			},
+		}},
 	}
 
 	if useRDS {
@@ -540,6 +563,13 @@ func makeHTTPFilter(
 									Route: &envoyroute.RouteAction{
 										ClusterSpecifier: &envoyroute.RouteAction_Cluster{
 											Cluster: cluster,
+										},
+										Timeout: &requestTimeout,
+										RetryPolicy: &envoyroute.RetryPolicy{
+											RetryOn:              "5xx,connect-failure",
+											NumRetries:           &types.UInt32Value{Value: uint32(2)},
+											PerTryTimeout:        &perTryTimeout,
+											RetriableStatusCodes: []uint32{502, 503, 504},
 										},
 									},
 								},

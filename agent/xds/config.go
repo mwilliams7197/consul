@@ -131,6 +131,11 @@ type UpstreamConfig struct {
 	// ConnectTimeoutMs is the number of milliseconds to timeout making a new
 	// connection to this upstream. Defaults to 5000 (5 seconds) if not set.
 	ConnectTimeoutMs int `mapstructure:"connect_timeout_ms"`
+
+	// TimeoutMs is the number of milliseconds for outstanding request  to
+	// complete for upstream listener. Default to 15000 (15 seconds) if not set.
+
+	TimeoutMs int `mapstructure:"timeout_ms"`
 }
 
 func ParseUpstreamConfigNoDefaults(m map[string]interface{}) (UpstreamConfig, error) {
@@ -152,6 +157,9 @@ func ParseUpstreamConfig(m map[string]interface{}) (UpstreamConfig, error) {
 	}
 	if cfg.ConnectTimeoutMs < 1 {
 		cfg.ConnectTimeoutMs = 5000
+	}
+	if cfg.TimeoutMs < 1 {
+		cfg.TimeoutMs = 15000
 	}
 	return cfg, err
 }
