@@ -481,10 +481,10 @@ func makeHTTPFilter(useRDS bool, filterName, cluster, statPrefix string, ingress
 	if !ingress {
 		op = envoyhttp.EGRESS
 	}
-	proto := "http"
-	if grpc {
-		proto = "grpc"
-	}
+	//proto := "http"
+	//if grpc {
+	//	proto = "grpc"
+	//}
 	httpFilters := []*envoyhttp.HttpFilter{
 		&envoyhttp.HttpFilter{
 			Name: "envoy.router",
@@ -508,11 +508,16 @@ func makeHTTPFilter(useRDS bool, filterName, cluster, statPrefix string, ingress
 		CodecType:   envoyhttp.AUTO,
 		HttpFilters: httpFilters,
 		Tracing: &envoyhttp.HttpConnectionManager_Tracing{
+
 			OperationName: op,
 			// Don't trace any requests by default unless the client application
 			// explicitly propagates trace headers that indicate this should be
 			// sampled.
-			RandomSampling: &envoytype.Percent{Value: 0.0},
+			//https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/observability/tracing#how-to-initiate-a-trace
+			//https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/route/route.proto.html?highlight=route#route-tracing
+			// We have set to always sample . But latter if the volume is so high then we can reduce the percentage or
+			// initiate sampling by setting the x-client-trace-id external request or x-envoy-force-trace for internal request
+			RandomSampling: &envoytype.Percent{Value: 100.0},
 		},
 		AccessLog: []*alf.AccessLog{{
 			Name: util.FileAccessLog,
@@ -566,7 +571,7 @@ func makeHTTPFilter(useRDS bool, filterName, cluster, statPrefix string, ingress
 										},
 										Timeout: &requestTimeout,
 										RetryPolicy: &envoyroute.RetryPolicy{
-											RetryOn:              "5xx,connect-`failure`",
+											RetryOn:              "5xx,connect-failure",
 											NumRetries:           &types.UInt32Value{Value: uint32(2)},
 											PerTryTimeout:        &perTryTimeout,
 											RetriableStatusCodes: []uint32{502, 503, 504},
