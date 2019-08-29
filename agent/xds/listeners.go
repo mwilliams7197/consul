@@ -504,7 +504,7 @@ func makeHTTPFilter(useRDS bool, filterName, cluster, statPrefix string, ingress
 	}
 	cfg := &envoyhttp.HttpConnectionManager{
 		//StatPrefix:  makeStatPrefix(proto, statPrefix, filterName),
-		StatPrefix:  makeStatPrefix(proto, statPrefix, filterName),
+		StatPrefix:  statPrefix,
 		CodecType:   envoyhttp.AUTO,
 		HttpFilters: httpFilters,
 		Tracing: &envoyhttp.HttpConnectionManager_Tracing{
@@ -566,7 +566,7 @@ func makeHTTPFilter(useRDS bool, filterName, cluster, statPrefix string, ingress
 										},
 										Timeout: &requestTimeout,
 										RetryPolicy: &envoyroute.RetryPolicy{
-											RetryOn:              "5xx,connect-failure",
+											RetryOn:              "5xx,connect-`failure`",
 											NumRetries:           &types.UInt32Value{Value: uint32(2)},
 											PerTryTimeout:        &perTryTimeout,
 											RetriableStatusCodes: []uint32{502, 503, 504},
