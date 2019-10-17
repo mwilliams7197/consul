@@ -458,9 +458,23 @@ func makeSNIClusterFilter() (envoylistener.Filter, error) {
 }
 
 func makeTCPProxyFilter(filterName, cluster, statPrefix string) (envoylistener.Filter, error) {
+	alsConfig := &als.FileAccessLog{
+		Path: fmt.Sprintf("/var/log/envoy-access/tcp-%s.log", cluster),
+	}
+	alsConfigPbst, err := types.MarshalAny(alsConfig)
+	//TODO Remove Panic
+	if err != nil {
+		panic(err)
+	}
 	cfg := &envoytcp.TcpProxy{
 		StatPrefix:       makeStatPrefix("tcp", statPrefix, filterName),
 		ClusterSpecifier: &envoytcp.TcpProxy_Cluster{Cluster: cluster},
+		AccessLog: []*alf.AccessLog{{
+			Name: util.FileAccessLog,
+			ConfigType: &alf.AccessLog_TypedConfig{
+				TypedConfig: alsConfigPbst,
+			},
+		}},
 	}
 	return makeFilter("envoy.tcp_proxy", cfg)
 }
