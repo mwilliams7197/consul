@@ -406,7 +406,7 @@ func (s *Server) makeExposedCheckListener(cfgSnap *proxycfg.ConfigSnapshot, clus
 
 	filterName := fmt.Sprintf("exposed_path_filter_%s_%d", strippedPath, path.ListenerPort)
 
-	f, err := makeListenerFilter(false, path.Protocol, filterName, cluster, "", path.Path, true)
+	f, err := makeListenerFilter(false, path.Protocol, filterName, cluster, "", path.Path, true, 0, "")
 	if err != nil {
 		return nil, err
 	}
@@ -579,7 +579,6 @@ func (s *Server) makeUpstreamListenerForDiscoveryChain(
 		proto = "tcp"
 	}
 
-
 	useRDS := true
 	clusterName := ""
 	if proto == "tcp" {
@@ -682,7 +681,7 @@ func makeHTTPFilter(
 	useRDS bool,
 	filterName, cluster, statPrefix, routePath string,
 	ingress, grpc, http2 bool,
-	timeout int, serviceName string
+	timeout int, serviceName string,
 ) (envoylistener.Filter, error) {
 	//timeoutString, _ := fmt.Print(time.Duration(timeout) * time.Millisecond)
 	requestTimeout := time.Duration(timeout) * time.Millisecond
@@ -702,8 +701,14 @@ func makeHTTPFilter(
 		},
 	}
 	if http2 {
-		httpFilters = append([]*envoyhttp.HttpFilter{
-&envoyhttp.HttpFilter{Name: "envoy.grpc_web",}},httpFilters)
+		httpFilters = []*envoyhttp.HttpFilter{
+			{
+				Name: "envoy.grpc_web",
+			},
+			{
+				Name: "envoy.router",
+			},
+		}
 	}
 
 	alsConfig := &als.FileAccessLog{
