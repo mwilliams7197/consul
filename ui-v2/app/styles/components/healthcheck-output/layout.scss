@@ -1,30 +1,85 @@
-%healthcheck-output::before {
-  background-size: 55%;
-  width: 25px !important;
-  height: 25px !important;
-  left: 17px;
-  top: 20px !important;
-  margin-top: 0 !important;
-}
-%healthcheck-output.warning::before {
-  background-size: 100%;
-}
 %healthcheck-output {
-  padding: 20px 24px;
-  padding-bottom: 26px;
-  padding-left: 57px;
+  display: flex;
+
+  padding: 20px 16px;
+  padding-right: 24px;
+
   margin-bottom: 24px;
-  position: relative;
 }
-%healthcheck-output pre {
-  padding: 12px;
+%healthcheck-output::before {
+  margin-right: 15px;
 }
-%healthcheck-output .with-feedback {
-  float: right;
+%healthcheck-output > div {
+  flex: 1 1 auto;
+}
+%healthcheck-output header,
+%healthcheck-output dl:last-of-type {
+  width: 100%;
+}
+%healthcheck-output header {
+  margin-bottom: 0.9em;
+}
+%healthcheck-output > div {
+  // 100% minus the width of the icon space (26)
+  width: calc(100% - 26px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+%healthcheck-output dl {
+  min-width: 110px;
+}
+%healthcheck-output dl > * {
+  display: block;
+  width: auto;
+  position: static;
+  padding-left: 0;
 }
 %healthcheck-output dt {
-  margin-bottom: 0.2em;
+  margin-bottom: 0;
 }
-%healthcheck-output dd:first-of-type {
-  margin-bottom: 0.6em;
+%healthcheck-output dd {
+  position: relative;
+}
+
+%healthcheck-output dl:nth-last-of-type(2) {
+  width: 50%;
+}
+%healthcheck-output dl:last-of-type {
+  margin-bottom: 0;
+}
+%healthcheck-output dl:last-of-type dt {
+  margin-bottom: 0.3em;
+}
+
+%healthcheck-output pre {
+  padding: 12px;
+  padding-right: 40px;
+  white-space: pre-wrap;
+  position: relative;
+}
+%healthcheck-output pre code {
+  word-wrap: break-word;
+}
+%healthcheck-output .with-feedback {
+  position: absolute;
+  right: 0.5em;
+  top: 1em;
+}
+@media #{$--lt-spacious-healthcheck-output} {
+  %healthcheck-output {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 14px;
+    padding-right: 19px;
+  }
+  %healthcheck-output::before {
+    margin-right: 8px;
+  }
+  %healthcheck-output dl:nth-last-of-type(2) {
+    width: 100%;
+  }
+  %healthcheck-output dl:not(:last-of-type) {
+    margin-right: 0;
+  }
 }

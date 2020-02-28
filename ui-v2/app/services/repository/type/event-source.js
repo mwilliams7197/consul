@@ -6,8 +6,37 @@ import LazyProxyService from 'consul-ui/services/lazy-proxy';
 import { cache as createCache, BlockingEventSource } from 'consul-ui/utils/dom/event-source';
 
 const createProxy = function(repo, find, settings, cache, serialize = JSON.stringify) {
+  const client = this.client;
+  const store = this.store;
+  // custom createEvent, here used to reconcile the ember-data store for each tick
+  const createEvent = function(result, configuration) {
+    const event = {
+      type: 'message',
+      data: result,
+    };
+    const meta = get(event.data || {}, 'meta') || {};
+    if (typeof meta.date !== 'undefined') {
+      // unload anything older than our current sync date/time
+      const checkNspace = meta.nspace !== '';
+      store.peekAll(repo.getModelName()).forEach(function(item) {
+        const dc = get(item, 'Datacenter');
+        if (dc === meta.dc) {
+          if (checkNspace) {
+            const nspace = get(item, 'Namespace');
+            if (nspace !== meta.namespace) {
+              return;
+            }
+          }
+          const date = get(item, 'SyncTime');
+          if (typeof date !== 'undefined' && date != meta.date) {
+            store.unloadRecord(item);
+          }
+        }
+      });
+    }
+    return event;
+  };
   // proxied find*..(id, dc)
-  const client = get(this, 'client');
   return function() {
     const key = `${repo.getModelName()}.${find}.${serialize([...arguments])}`;
     const _args = arguments;
@@ -46,8 +75,9 @@ const createProxy = function(repo, find, settings, cache, serialize = JSON.strin
         key: key,
         type: BlockingEventSource,
         settings: {
-          enabled: settings.blocking,
+          enabled: typeof settings.blocking === 'undefined' || settings.blocking,
         },
+        createEvent: createEvent,
       }
     );
   };
@@ -71,10 +101,8 @@ export default LazyProxyService.extend({
     return method.indexOf('find') === 0;
   },
   execute: function(repo, find) {
-    return get(this, 'settings')
-      .findBySlug('client')
-      .then(settings => {
-        return createProxy.bind(this)(repo, find, settings, cache);
-      });
+    return this.settings.findBySlug('client').then(settings => {
+      return createProxy.bind(this)(repo, find, settings, cache);
+    });
   },
 });

@@ -6,17 +6,16 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
-	"reflect"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/hashicorp/consul/agent/structs"
 	"github.com/hashicorp/consul/api"
 	"github.com/hashicorp/consul/testrpc"
 	"github.com/hashicorp/raft"
-	"github.com/pascaldekloe/goe/verify"
-
-	"github.com/hashicorp/consul/agent/structs"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestTxnEndpoint_Bad_JSON(t *testing.T) {
@@ -40,7 +39,7 @@ func TestTxnEndpoint_Bad_JSON(t *testing.T) {
 
 func TestTxnEndpoint_Bad_Size_Item(t *testing.T) {
 	t.Parallel()
-	testIt := func(agent *TestAgent, wantPass bool) {
+	testIt := func(t *testing.T, agent *TestAgent, wantPass bool) {
 		value := strings.Repeat("X", 3*raft.SuggestedMaxDataSize)
 		value = base64.StdEncoding.EncodeToString([]byte(value))
 		buf := bytes.NewBuffer([]byte(fmt.Sprintf(`
@@ -55,6 +54,7 @@ func TestTxnEndpoint_Bad_Size_Item(t *testing.T) {
  ]
  `, value)))
 		req, _ := http.NewRequest("PUT", "/v1/txn", buf)
+		req.Header.Add("Content-Length", fmt.Sprintf("%d", buf.Len()))
 		resp := httptest.NewRecorder()
 		if _, err := agent.srv.Txn(resp, req); err != nil {
 			t.Fatalf("err: %v", err)
@@ -69,13 +69,13 @@ func TestTxnEndpoint_Bad_Size_Item(t *testing.T) {
 
 	t.Run("toobig", func(t *testing.T) {
 		a := NewTestAgent(t, t.Name(), "")
-		testIt(a, false)
+		testIt(t, a, false)
 		a.Shutdown()
 	})
 
 	t.Run("allowed", func(t *testing.T) {
 		a := NewTestAgent(t, t.Name(), "limits = { kv_max_value_size = 123456789 }")
-		testIt(a, true)
+		testIt(t, a, true)
 		a.Shutdown()
 	})
 }
@@ -212,7 +212,10 @@ func TestTxnEndpoint_KV_Actions(t *testing.T) {
 			if len(txnResp.Results) != 2 {
 				t.Fatalf("bad: %v", txnResp)
 			}
+
 			index = txnResp.Results[0].KV.ModifyIndex
+			entMeta := txnResp.Results[0].KV.EnterpriseMeta
+
 			expected := structs.TxnResponse{
 				Results: structs.TxnResults{
 					&structs.TxnResult{
@@ -226,6 +229,7 @@ func TestTxnEndpoint_KV_Actions(t *testing.T) {
 								CreateIndex: index,
 								ModifyIndex: index,
 							},
+							EnterpriseMeta: entMeta,
 						},
 					},
 					&structs.TxnResult{
@@ -239,13 +243,12 @@ func TestTxnEndpoint_KV_Actions(t *testing.T) {
 								CreateIndex: index,
 								ModifyIndex: index,
 							},
+							EnterpriseMeta: entMeta,
 						},
 					},
 				},
 			}
-			if !reflect.DeepEqual(txnResp, expected) {
-				t.Fatalf("bad: %v", txnResp)
-			}
+			assert.Equal(t, expected, txnResp)
 		}
 
 		// Do a read-only transaction that should get routed to the
@@ -290,6 +293,7 @@ func TestTxnEndpoint_KV_Actions(t *testing.T) {
 			if !ok {
 				t.Fatalf("bad type: %T", obj)
 			}
+			entMeta := txnResp.Results[0].KV.EnterpriseMeta
 			expected := structs.TxnReadResponse{
 				TxnResponse: structs.TxnResponse{
 					Results: structs.TxnResults{
@@ -304,6 +308,7 @@ func TestTxnEndpoint_KV_Actions(t *testing.T) {
 									CreateIndex: index,
 									ModifyIndex: index,
 								},
+								EnterpriseMeta: entMeta,
 							},
 						},
 						&structs.TxnResult{
@@ -317,6 +322,7 @@ func TestTxnEndpoint_KV_Actions(t *testing.T) {
 									CreateIndex: index,
 									ModifyIndex: index,
 								},
+								EnterpriseMeta: entMeta,
 							},
 						},
 					},
@@ -325,9 +331,7 @@ func TestTxnEndpoint_KV_Actions(t *testing.T) {
 					KnownLeader: true,
 				},
 			}
-			if !reflect.DeepEqual(txnResp, expected) {
-				t.Fatalf("bad: %v", txnResp)
-			}
+			assert.Equal(t, expected, txnResp)
 		}
 
 		// Now that we have an index we can do a CAS to make sure the
@@ -368,7 +372,10 @@ func TestTxnEndpoint_KV_Actions(t *testing.T) {
 			if len(txnResp.Results) != 2 {
 				t.Fatalf("bad: %v", txnResp)
 			}
+
 			modIndex := txnResp.Results[0].KV.ModifyIndex
+			entMeta := txnResp.Results[0].KV.EnterpriseMeta
+
 			expected := structs.TxnResponse{
 				Results: structs.TxnResults{
 					&structs.TxnResult{
@@ -380,6 +387,7 @@ func TestTxnEndpoint_KV_Actions(t *testing.T) {
 								CreateIndex: index,
 								ModifyIndex: modIndex,
 							},
+							EnterpriseMeta: entMeta,
 						},
 					},
 					&structs.TxnResult{
@@ -391,13 +399,12 @@ func TestTxnEndpoint_KV_Actions(t *testing.T) {
 								CreateIndex: index,
 								ModifyIndex: modIndex,
 							},
+							EnterpriseMeta: entMeta,
 						},
 					},
 				},
 			}
-			if !reflect.DeepEqual(txnResp, expected) {
-				t.Fatalf("bad: %v", txnResp)
-			}
+			assert.Equal(t, expected, txnResp)
 		}
 	})
 
@@ -554,6 +561,7 @@ func TestTxnEndpoint_UpdateCheck(t *testing.T) {
 						CreateIndex: index,
 						ModifyIndex: index,
 					},
+					EnterpriseMeta: *structs.DefaultEnterpriseMeta(),
 				},
 			},
 			&structs.TxnResult{
@@ -575,6 +583,7 @@ func TestTxnEndpoint_UpdateCheck(t *testing.T) {
 						CreateIndex: index,
 						ModifyIndex: index,
 					},
+					EnterpriseMeta: *structs.DefaultEnterpriseMeta(),
 				},
 			},
 			&structs.TxnResult{
@@ -596,9 +605,57 @@ func TestTxnEndpoint_UpdateCheck(t *testing.T) {
 						CreateIndex: index,
 						ModifyIndex: index,
 					},
+					EnterpriseMeta: *structs.DefaultEnterpriseMeta(),
 				},
 			},
 		},
 	}
-	verify.Values(t, "", txnResp, expected)
+	assert.Equal(t, expected, txnResp)
+}
+
+func TestConvertOps_ContentLength(t *testing.T) {
+	a := NewTestAgent(t, t.Name(), "")
+	defer a.Shutdown()
+
+	jsonBody := `[
+     {
+         "KV": {
+             "Verb": "set",
+             "Key": "key1",
+             "Value": "aGVsbG8gd29ybGQ="
+         }
+     }
+ ]`
+
+	tests := []struct {
+		contentLength string
+		ok            bool
+	}{
+		{"", true},
+		{strconv.Itoa(len(jsonBody)), true},
+		{strconv.Itoa(raft.SuggestedMaxDataSize), true},
+		{strconv.Itoa(raft.SuggestedMaxDataSize + 100), false},
+	}
+
+	for _, tc := range tests {
+		t.Run("contentLength: "+tc.contentLength, func(t *testing.T) {
+			resp := httptest.NewRecorder()
+			var body bytes.Buffer
+
+			// Doesn't matter what the request body size actually is, as we only
+			// check 'Content-Length' header in this test anyway.
+			body.WriteString(jsonBody)
+
+			req := httptest.NewRequest("POST", "http://foo.com", &body)
+			req.Header.Add("Content-Length", tc.contentLength)
+
+			_, _, ok := a.srv.convertOps(resp, req)
+			if ok != tc.ok {
+				t.Fatal("ok != tc.ok")
+			}
+
+		})
+
+	}
+
 }

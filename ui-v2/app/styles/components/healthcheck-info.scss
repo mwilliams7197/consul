@@ -1,11 +1,11 @@
 @import './healthcheck-info/index';
-@import './icons/index';
-tr .healthcheck-info {
+%table tr .healthcheck-info {
   @extend %healthcheck-info;
 }
-td span.zero {
-  @extend %with-no-healthchecks;
-  // TODO: Why isn't this in layout?
+// TODO: Look at why we can't have the zeros in the healthcheck-info
+%table td span.zero {
+  @extend %with-minus-square-fill-color-icon;
+  background-position: left center;
   display: block;
   text-indent: 20px;
   color: $gray-400;

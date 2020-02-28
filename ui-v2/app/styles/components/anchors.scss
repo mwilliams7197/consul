@@ -1,9 +1,7 @@
-@import './anchors/index';
-%main-content a {
-  color: $gray-900;
-}
-a[rel*='external'] {
-  @extend %with-exit;
+@import '../base/components/anchors/index';
+a[rel*='external']::after {
+  @extend %with-exit-icon, %as-pseudo;
+  margin-left: 8px;
 }
 %main-content label a[rel*='help'] {
   color: $gray-400;
@@ -11,6 +9,9 @@ a[rel*='external'] {
 %main-content a[rel*='help']::after {
   @extend %with-info-circle-outline-icon, %as-pseudo;
   opacity: 0.4;
+}
+%main-content h2 a {
+  color: $gray-900;
 }
 %main-content h2 a[rel*='help']::after {
   font-size: 0.65em;

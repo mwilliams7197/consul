@@ -28,9 +28,11 @@ export default Model.extend({
   ChecksWarning: attr(),
   Nodes: attr(),
   Datacenter: attr('string'),
+  Namespace: attr('string'),
   Node: attr(),
   Service: attr(),
   Checks: attr(),
+  SyncTime: attr('number'),
   meta: attr(),
   passing: computed('ChecksPassing', 'Checks', function() {
     let num = 0;

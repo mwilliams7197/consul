@@ -12,20 +12,20 @@ html.template-loading main > div {
 %loader circle {
   fill: $magenta-100;
 }
-%main-header::before {
+%main-header-horizontal::before {
   background-color: $magenta-600;
 }
-%header-nav a,
-%header-nav-toggle-button {
+%main-nav-horizontal-action,
+%main-nav-horizontal-toggle-button {
   color: $magenta-050;
 }
 @media #{$--lt-horizontal-nav} {
-  %header-nav-panel {
+  %main-nav-horizontal-panel {
     background-color: $magenta-600;
   }
 }
 @media #{$--horizontal-nav} {
-  %header-nav > ul > li:not(:first-child).is-active > a {
+  %main-nav-horizontal-action-active {
     background-color: $magenta-800;
   }
 }
@@ -40,12 +40,13 @@ html.template-loading main > div {
 }
 /* toggleable toolbar for short screens */
 [for='toolbar-toggle'] {
-  @extend %with-magnifier;
+  @extend %with-search-color-icon;
+  background-position: 0 4px;
+  display: inline-block;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
   color: $blue-500;
-  width: 20px;
-  height: 20px;
-  margin-left: 15px;
-  top: -3px;
 }
 #toolbar-toggle {
   display: none;
@@ -55,9 +56,17 @@ html.template-loading main > div {
     display: none;
   }
 }
+// reduced search magnifying icon layout
 @media #{$--lt-horizontal-selects} {
   %app-view header h1 {
     display: inline-block;
+  }
+  %app-view header h1 {
+    display: inline-block;
+  }
+  // on the instance detail page we don't have the magnifier
+  html.template-instance.template-show h1 {
+    display: block;
   }
   #toolbar-toggle + * {
     display: none;

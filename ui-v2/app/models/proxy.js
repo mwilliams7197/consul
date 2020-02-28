@@ -10,4 +10,7 @@ export default Model.extend({
   ServiceID: attr('string'),
   Node: attr('string'),
   ServiceProxy: attr(),
+  SyncTime: attr('number'),
+  Datacenter: attr('string'),
+  Namespace: attr('string'),
 });

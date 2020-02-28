@@ -1,7 +1,6 @@
 import Service from '@ember/service';
-import { get } from '@ember/object';
 
-import Clipboard from 'npm:clipboard';
+import Clipboard from 'clipboard';
 
 class ClipboardCallback extends Clipboard {
   constructor(trigger, cb) {
@@ -22,7 +21,7 @@ export default Service.extend({
   key: 'clipboard',
   execute: function(trigger) {
     return new ClipboardCallback(trigger, val => {
-      get(this, 'storage').setItem(get(this, 'key'), val);
+      this.storage.setItem(this.key, val);
     });
   },
 });
