@@ -2303,15 +2303,17 @@
   dependencies:
     lodash "^4.17.15"
 
-"@storybook/ember-cli-storybook@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@storybook/ember-cli-storybook/-/ember-cli-storybook-0.2.1.tgz#12fa8a122fc75a5faabf9e3842eb6575febc4fd3"
-  integrity sha512-V5zqMqMHNrvwI0Ut0X0gnTAf+psbhKGV9HMN810gYZ+4ke3LQGdW4Zvq2CRk/wO6+FPNswImSf7fKEd/nOdaUA==
+"@storybook/ember-cli-storybook@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@storybook/ember-cli-storybook/-/ember-cli-storybook-0.3.0.tgz#c169d9f87e1c728fb5d56add8ee67c93489a5786"
+  integrity sha512-IJRyx9rsiVZa80J3CfrQnNEHPYGn4aLdDZOHrtVfWJ1dAt6TkTdKAllT334tOQMgk2ocyfK4/c/OFeRYyZSjxg==
   dependencies:
     broccoli-funnel "^2.0.2"
+    broccoli-merge-trees "^3.0.2"
     cheerio "^1.0.0-rc.2"
     ember-cli-addon-docs-yuidoc "^0.2.3"
-    ember-cli-babel "^7.1.2"
+    ember-cli-babel "^7.23.0"
+    ember-cli-htmlbars "^5.3.1"
 
 "@storybook/ember@^6.0.27":
   version "6.0.27"
@@ -7601,7 +7603,7 @@ ember-cli-htmlbars@^4.0.5, ember-cli-htmlbars@^4.2.3, ember-cli-htmlbars@^4.3.1:
     strip-bom "^4.0.0"
     walk-sync "^2.0.2"
 
-ember-cli-htmlbars@^5.0.0, ember-cli-htmlbars@^5.1.2, ember-cli-htmlbars@^5.2.0:
+ember-cli-htmlbars@^5.0.0, ember-cli-htmlbars@^5.1.2, ember-cli-htmlbars@^5.2.0, ember-cli-htmlbars@^5.3.1:
   version "5.3.1"
   resolved "https://registry.yarnpkg.com/ember-cli-htmlbars/-/ember-cli-htmlbars-5.3.1.tgz#61793964fc2599ce750db9e972ab55c6dd177c48"
   integrity sha512-ZjQTt44euDoqLvUkWbt1svgNCXgLzOztEbc2qqYMQvhQig416LMrWK7l3SSbNU+BtLD5UIxmwvLfF1tsO2CVyA==
