@@ -8,7 +8,7 @@ require (
 	github.com/Azure/go-autorest/autorest/validation v0.2.0 // indirect
 	github.com/abdullin/seq v0.0.0-20160510034733-d5467c17e7af // indirect
 	github.com/aws/aws-sdk-go v1.25.41
-	github.com/denverdino/aliyungo v0.0.0-20170926055100-d3308649c661
+	github.com/denverdino/aliyungo v0.0.0-20201222091910-a47aa053adf7
 	github.com/digitalocean/godo v1.1.1
 	github.com/dnaeon/go-vcr v1.0.1 // indirect
 	github.com/google/go-querystring v0.0.0-20170111101155-53e6ce116135 // indirect
