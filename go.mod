@@ -48,7 +48,7 @@ require (
 	github.com/hashicorp/go-version v1.2.1
 	github.com/hashicorp/golang-lru v0.5.4
 	github.com/hashicorp/hcl v1.0.0
-	github.com/hashicorp/hil v0.0.0-20200423225030-a18a1cd20038
+	github.com/hashicorp/hil v0.0.0-20201113172851-43f73a9c7007
 	github.com/hashicorp/mdns v1.0.3 // indirect
 	github.com/hashicorp/memberlist v0.2.2
 	github.com/hashicorp/net-rpc-msgpackrpc v0.0.0-20151116020338-a14192a58a69
