@@ -3,7 +3,7 @@ module github.com/hashicorp/go-raftchunking
 go 1.12
 
 require (
-	github.com/go-test/deep v1.0.2
+	github.com/go-test/deep v1.0.7
 	github.com/golang/protobuf v1.3.1
 	github.com/hashicorp/errwrap v1.0.0
 	github.com/hashicorp/raft v1.1.1
