@@ -200,6 +200,13 @@ github.com/gophercloud/gophercloud/openstack/identity/v2/tokens
 github.com/gophercloud/gophercloud/openstack/identity/v3/tokens
 github.com/gophercloud/gophercloud/openstack/utils
 github.com/gophercloud/gophercloud/pagination
+# github.com/hashicorp/consul/api v1.8.0 => ./api
+github.com/hashicorp/consul/api
+github.com/hashicorp/consul/api/watch
+# github.com/hashicorp/consul/sdk v0.7.0 => ./sdk
+github.com/hashicorp/consul/sdk/freeport
+github.com/hashicorp/consul/sdk/testutil
+github.com/hashicorp/consul/sdk/testutil/retry
 # github.com/hashicorp/errwrap v1.0.0
 github.com/hashicorp/errwrap
 # github.com/hashicorp/go-bexpr v0.1.2
@@ -282,7 +289,7 @@ github.com/hashicorp/net-rpc-msgpackrpc
 github.com/hashicorp/raft
 # github.com/hashicorp/raft-autopilot v0.1.1
 github.com/hashicorp/raft-autopilot
-# github.com/hashicorp/raft-boltdb v0.0.0-20171010151810-6e5ba93211ea
+# github.com/hashicorp/raft-boltdb v0.0.0-20191021154308-4207f1bf0617
 github.com/hashicorp/raft-boltdb
 # github.com/hashicorp/serf v0.9.5
 github.com/hashicorp/serf/coordinate
