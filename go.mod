@@ -27,7 +27,7 @@ require (
 	github.com/google/go-cmp v0.5.2
 	github.com/google/go-querystring v1.0.0 // indirect
 	github.com/google/gofuzz v1.2.0
-	github.com/google/tcpproxy v0.0.0-20180808230851-dfa16c61dad2
+	github.com/google/tcpproxy v0.0.0-20200125044825-b6bb9b5b8252
 	github.com/hashicorp/consul/api v1.8.0
 	github.com/hashicorp/consul/sdk v0.7.0
 	github.com/hashicorp/errwrap v1.0.0
