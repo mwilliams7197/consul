@@ -2,8 +2,8 @@ module github.com/hashicorp/go-discover
 
 require (
 	github.com/Azure/azure-sdk-for-go v40.3.0+incompatible
-	github.com/Azure/go-autorest/autorest v0.10.0
-	github.com/Azure/go-autorest/autorest/azure/auth v0.4.2
+	github.com/Azure/go-autorest/autorest v0.11.13
+	github.com/Azure/go-autorest/autorest/azure/auth v0.5.5
 	github.com/Azure/go-autorest/autorest/to v0.3.0 // indirect
 	github.com/Azure/go-autorest/autorest/validation v0.2.0 // indirect
 	github.com/abdullin/seq v0.0.0-20160510034733-d5467c17e7af // indirect
