@@ -6,7 +6,7 @@ replace github.com/hashicorp/consul/api => ./api
 
 replace github.com/hashicorp/consul/sdk => ./sdk
 
-replace launchpad.net/gocheck => github.com/go-check/check v0.0.0-20140225173054-eb6ee6f84d0a
+replace launchpad.net/gocheck => github.com/go-check/check 10cb98267c6c
 
 require (
 	github.com/Microsoft/go-winio v0.4.3 // indirect
