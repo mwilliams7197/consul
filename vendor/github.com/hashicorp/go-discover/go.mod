@@ -29,12 +29,12 @@ require (
 	github.com/sean-/seed v0.0.0-20170313163322-e2103e2c3529 // indirect
 	github.com/sirupsen/logrus v1.0.6 // indirect
 	github.com/softlayer/softlayer-go v0.0.0-20180806151055-260589d94c7d
-	github.com/stretchr/testify v1.3.0
+	github.com/stretchr/testify v1.4.0
 	github.com/tencentcloud/tencentcloud-sdk-go v3.0.83+incompatible
 	github.com/tent/http-link-go v0.0.0-20130702225549-ac974c61c2f9 // indirect
 	github.com/vmware/govmomi v0.18.0
-	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
-	google.golang.org/api v0.4.0
+	golang.org/x/oauth2 v0.0.0-20201208152858-08078c50e5b5
+	google.golang.org/api v0.30.0
 	gopkg.in/airbrake/gobrake.v2 v2.0.9 // indirect
 	gopkg.in/gemnasium/logrus-airbrake-hook.v2 v2.1.2 // indirect
 	gopkg.in/resty.v1 v1.12.0 // indirect
