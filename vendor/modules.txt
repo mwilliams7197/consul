@@ -200,6 +200,13 @@ github.com/gophercloud/gophercloud/openstack/identity/v2/tokens
 github.com/gophercloud/gophercloud/openstack/identity/v3/tokens
 github.com/gophercloud/gophercloud/openstack/utils
 github.com/gophercloud/gophercloud/pagination
+# github.com/hashicorp/consul/api v1.8.0 => ./api
+github.com/hashicorp/consul/api
+github.com/hashicorp/consul/api/watch
+# github.com/hashicorp/consul/sdk v0.7.0 => ./sdk
+github.com/hashicorp/consul/sdk/freeport
+github.com/hashicorp/consul/sdk/testutil
+github.com/hashicorp/consul/sdk/testutil/retry
 # github.com/hashicorp/errwrap v1.0.0
 github.com/hashicorp/errwrap
 # github.com/hashicorp/go-bexpr v0.1.2
@@ -385,7 +392,7 @@ github.com/prometheus/procfs/internal/util
 github.com/rboyer/safeio
 # github.com/renier/xmlrpc v0.0.0-20170708154548-ce4a1a486c03
 github.com/renier/xmlrpc
-# github.com/ryanuber/columnize v2.1.0+incompatible
+# github.com/ryanuber/columnize v2.1.2+incompatible
 github.com/ryanuber/columnize
 # github.com/ryanuber/go-glob v1.0.0
 github.com/ryanuber/go-glob
