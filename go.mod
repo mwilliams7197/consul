@@ -93,7 +93,7 @@ require (
 	google.golang.org/appengine v1.6.0 // indirect
 	google.golang.org/grpc v1.25.1
 	gopkg.in/square/go-jose.v2 v2.5.1
-	k8s.io/api v0.16.9
+	k8s.io/api v0.20.1
 	k8s.io/apimachinery v0.16.9
 	k8s.io/client-go v0.16.9
 )
