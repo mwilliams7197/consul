@@ -15,7 +15,7 @@ require (
 	github.com/googleapis/gnostic v0.2.0 // indirect
 	github.com/gophercloud/gophercloud v0.1.0
 	github.com/hashicorp/go-multierror v1.0.0
-	github.com/hashicorp/mdns v1.0.1
+	github.com/hashicorp/mdns v1.0.3
 	github.com/hashicorp/vic v1.5.1-0.20190403131502-bbfe86ec9443
 	github.com/imdario/mergo v0.3.6 // indirect
 	github.com/jarcoal/httpmock v0.0.0-20180424175123-9c70cfe4a1da // indirect
