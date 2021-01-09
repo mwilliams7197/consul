@@ -200,6 +200,13 @@ github.com/gophercloud/gophercloud/openstack/identity/v2/tokens
 github.com/gophercloud/gophercloud/openstack/identity/v3/tokens
 github.com/gophercloud/gophercloud/openstack/utils
 github.com/gophercloud/gophercloud/pagination
+# github.com/hashicorp/consul/api v1.8.0 => ./api
+github.com/hashicorp/consul/api
+github.com/hashicorp/consul/api/watch
+# github.com/hashicorp/consul/sdk v0.7.0 => ./sdk
+github.com/hashicorp/consul/sdk/freeport
+github.com/hashicorp/consul/sdk/testutil
+github.com/hashicorp/consul/sdk/testutil/retry
 # github.com/hashicorp/errwrap v1.0.0
 github.com/hashicorp/errwrap
 # github.com/hashicorp/go-bexpr v0.1.2
@@ -391,7 +398,7 @@ github.com/ryanuber/columnize
 github.com/ryanuber/go-glob
 # github.com/sean-/seed v0.0.0-20170313163322-e2103e2c3529
 github.com/sean-/seed
-# github.com/shirou/gopsutil/v3 v3.20.10
+# github.com/shirou/gopsutil/v3 v3.20.12
 github.com/shirou/gopsutil/v3/cpu
 github.com/shirou/gopsutil/v3/disk
 github.com/shirou/gopsutil/v3/host
