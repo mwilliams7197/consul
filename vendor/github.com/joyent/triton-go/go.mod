@@ -1,5 +1,7 @@
 module github.com/joyent/triton-go
 
+go 1.15
+
 require (
 	github.com/abdullin/seq v0.0.0-20160510034733-d5467c17e7af
 	github.com/cockroachdb/apd v1.1.0 // indirect
@@ -12,7 +14,7 @@ require (
 	github.com/mattn/go-runewidth v0.0.3 // indirect
 	github.com/olekukonko/tablewriter v0.0.0-20180130162743-b8a9be070da4
 	github.com/pkg/errors v0.8.1
-	github.com/rs/zerolog v1.4.0
+	github.com/rs/zerolog v1.20.0
 	github.com/satori/go.uuid v1.2.0 // indirect
 	github.com/sean-/conswriter v0.0.0-20180208195008-f5ae3917a627
 	github.com/sean-/pager v0.0.0-20180208200047-666be9bf53b5 // indirect
