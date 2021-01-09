@@ -200,10 +200,18 @@ github.com/gophercloud/gophercloud/openstack/identity/v2/tokens
 github.com/gophercloud/gophercloud/openstack/identity/v3/tokens
 github.com/gophercloud/gophercloud/openstack/utils
 github.com/gophercloud/gophercloud/pagination
+# github.com/hashicorp/consul/api v1.8.0 => ./api
+github.com/hashicorp/consul/api
+github.com/hashicorp/consul/api/watch
+# github.com/hashicorp/consul/sdk v0.7.0 => ./sdk
+github.com/hashicorp/consul/sdk/freeport
+github.com/hashicorp/consul/sdk/testutil
+github.com/hashicorp/consul/sdk/testutil/retry
 # github.com/hashicorp/errwrap v1.0.0
 github.com/hashicorp/errwrap
-# github.com/hashicorp/go-bexpr v0.1.2
+# github.com/hashicorp/go-bexpr v0.1.3
 github.com/hashicorp/go-bexpr
+github.com/hashicorp/go-bexpr/grammar
 # github.com/hashicorp/go-checkpoint v0.5.0
 github.com/hashicorp/go-checkpoint
 # github.com/hashicorp/go-cleanhttp v0.5.1
@@ -338,7 +346,7 @@ github.com/mitchellh/go-testing-interface
 github.com/mitchellh/hashstructure
 # github.com/mitchellh/mapstructure v1.3.3
 github.com/mitchellh/mapstructure
-# github.com/mitchellh/pointerstructure v1.0.0
+# github.com/mitchellh/pointerstructure v1.1.0
 github.com/mitchellh/pointerstructure
 # github.com/mitchellh/reflectwalk v1.0.1
 github.com/mitchellh/reflectwalk
