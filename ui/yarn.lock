@@ -7528,14 +7528,14 @@ ember-cli-dependency-checker@^3.2.0:
     resolve "^1.5.0"
     semver "^5.3.0"
 
-ember-cli-flash@^1.6.3:
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/ember-cli-flash/-/ember-cli-flash-1.9.1.tgz#fda9f7b92fdb4bb85688e4df554beb514c1749e7"
-  integrity sha512-9AN0BD27owvnNpFBELy5zSNIbJBUP8xW6mFV98L0qHnfJk2gG7bXbXOzt6VtRqWC+Pm5rCRqUoCz+NiwsPvObw==
+ember-cli-flash@^2.0.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-flash/-/ember-cli-flash-2.1.0.tgz#73730fe039f80aef264325cb85ef05fccf111eba"
+  integrity sha512-ktuX1QQGaIF1TsUEKVB2skaxnfvpciqMZ6bQkFppimkgpHU3ruypWl0Z6NRZ8jCUeXbcHOeXA+fih95CPQyxBQ==
   dependencies:
-    ember-cli-babel "^7.1.2"
-    ember-cli-htmlbars "^3.0.0"
-    ember-runtime-enumerable-includes-polyfill "^2.0.0"
+    ember-cli-babel "^7.18.0"
+    ember-cli-htmlbars "^4.2.3"
+    ember-runtime-enumerable-includes-polyfill "^2.1.0"
 
 ember-cli-get-component-path-option@^1.0.0:
   version "1.0.0"
@@ -7571,7 +7571,7 @@ ember-cli-htmlbars@^2.0.3:
     json-stable-stringify "^1.0.0"
     strip-bom "^3.0.0"
 
-ember-cli-htmlbars@^3.0.0, ember-cli-htmlbars@^3.0.1:
+ember-cli-htmlbars@^3.0.1:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/ember-cli-htmlbars/-/ember-cli-htmlbars-3.1.0.tgz#87806c2a0bca2ab52d4fb8af8e2215c1ca718a99"
   integrity sha512-cgvRJM73IT0aePUG7oQ/afB7vSRBV3N0wu9BrWhHX2zkR7A7cUBI7KC9VPk6tbctCXoM7BRGsCC4aIjF7yrfXA==
@@ -8393,7 +8393,7 @@ ember-router-helpers@^0.4.0:
   dependencies:
     ember-cli-babel "^7.20.0"
 
-ember-runtime-enumerable-includes-polyfill@^2.0.0:
+ember-runtime-enumerable-includes-polyfill@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/ember-runtime-enumerable-includes-polyfill/-/ember-runtime-enumerable-includes-polyfill-2.1.0.tgz#dc6d4a028471e4acc350dfd2a149874fb20913f5"
   integrity sha512-au18iI8VbEDYn3jLFZzETnKN5ciPgCUxMRucEP3jkq7qZ6sE0FVKpWMPY/h9tTND3VOBJt6fgPpEBJoJVCUudg==
