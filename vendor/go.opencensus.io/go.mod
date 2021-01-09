@@ -1,9 +1,11 @@
 module go.opencensus.io
 
+go 1.15
+
 require (
 	github.com/golang/protobuf v1.3.1
 	github.com/google/go-cmp v0.3.0
-	github.com/hashicorp/golang-lru v0.5.1
+	github.com/hashicorp/golang-lru v0.5.4
 	golang.org/x/net v0.0.0-20190501004415-9ce7a6920f09
 	golang.org/x/sys v0.0.0-20190502145724-3ef323f4f1fd // indirect
 	golang.org/x/text v0.3.2 // indirect
