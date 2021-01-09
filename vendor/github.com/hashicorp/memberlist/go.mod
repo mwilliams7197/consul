@@ -9,7 +9,7 @@ require (
 	github.com/hashicorp/go-immutable-radix v1.0.0 // indirect
 	github.com/hashicorp/go-msgpack v0.5.3
 	github.com/hashicorp/go-multierror v1.0.0
-	github.com/hashicorp/go-sockaddr v1.0.0
+	github.com/hashicorp/go-sockaddr v1.0.2
 	github.com/miekg/dns v1.1.26
 	github.com/pascaldekloe/goe v0.0.0-20180627143212-57f6aae5913c // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
