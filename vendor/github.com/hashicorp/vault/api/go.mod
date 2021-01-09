@@ -11,7 +11,7 @@ require (
 	github.com/hashicorp/go-multierror v1.1.0
 	github.com/hashicorp/go-retryablehttp v0.6.6
 	github.com/hashicorp/go-rootcerts v1.0.2
-	github.com/hashicorp/hcl v1.0.0
+	github.com/hashicorp/hcl/v2/v2 v2.8.2
 	github.com/hashicorp/vault/sdk v0.1.14-0.20200519221838-e0cfd64bc267
 	github.com/mitchellh/mapstructure v1.3.2
 	golang.org/x/net v0.0.0-20200602114024-627f9648deb9
