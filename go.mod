@@ -95,7 +95,7 @@ require (
 	gopkg.in/square/go-jose.v2 v2.5.1
 	k8s.io/api v0.16.9
 	k8s.io/apimachinery v0.16.9
-	k8s.io/client-go v0.16.9
+	k8s.io/client-go/v12/v12 v12.0.0
 )
 
 replace istio.io/gogo-genproto v0.0.0-20190124151557-6d926a6e6feb => github.com/istio/gogo-genproto v0.0.0-20190124151557-6d926a6e6feb

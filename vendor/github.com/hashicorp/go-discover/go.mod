@@ -40,7 +40,7 @@ require (
 	gopkg.in/resty.v1 v1.12.0 // indirect
 	k8s.io/api v0.16.9
 	k8s.io/apimachinery v0.16.9
-	k8s.io/client-go v0.16.9
+	k8s.io/client-go/v12/v12 v12.0.0
 	launchpad.net/gocheck v0.0.0-20140225173054-000000000087 // indirect
 )
 
