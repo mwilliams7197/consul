@@ -26,7 +26,7 @@ module "keys" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "2.21.0"
+  version = "2.64.0"
 
   name               = "${local.random_name}-${var.vpc_name}"
   cidr               = var.vpc_cidr
