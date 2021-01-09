@@ -23,7 +23,7 @@ require (
 	github.com/envoyproxy/go-control-plane v0.9.5
 	github.com/frankban/quicktest v1.11.0 // indirect
 	github.com/gogo/protobuf v1.2.2-0.20190723190241-65acae22fc9d
-	github.com/golang/protobuf v1.3.5
+	github.com/golang/protobuf v1.4.3
 	github.com/google/go-cmp v0.5.2
 	github.com/google/go-querystring v1.0.0 // indirect
 	github.com/google/gofuzz v1.2.0
