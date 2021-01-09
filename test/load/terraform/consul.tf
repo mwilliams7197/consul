@@ -24,7 +24,7 @@ data "aws_ami" "consul" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 module "consul_servers" {
-  source = "git::git@github.com:hashicorp/terraform-aws-consul.git//modules/consul-cluster?ref=v0.8.0"
+  source = "git::git@github.com:hashicorp/terraform-aws-consul.git//modules/consul-cluster?ref=v0.8.2"
 
   cluster_name      = "${var.cluster_name}-server"
   cluster_size      = var.num_servers
@@ -44,7 +44,7 @@ module "consul_servers" {
 }
 
 module "consul_clients" {
-  source        = "git::git@github.com:hashicorp/terraform-aws-consul.git//modules/consul-cluster?ref=v0.8.0"
+  source        = "git::git@github.com:hashicorp/terraform-aws-consul.git//modules/consul-cluster?ref=v0.8.2"
   cluster_name  = "${var.cluster_name}-client"
   cluster_size  = var.num_clients
   instance_type = var.instance_type
