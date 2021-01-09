@@ -1,3 +1,5 @@
 module golang.org/x/lint
 
-require golang.org/x/tools v0.0.0-20190311212946-11955173bddd
+go 1.15
+
+require golang.org/x/tools v0.0.0-20210108195828-e2f9c7f1fc8e
